@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/toggle"
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content"
+	android:orientation="horizontal"
+	android:layout_margin="10dp">
+	<RadioButton android:id="@+id/leftButton"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+	
+		android:layout_weight="1"
+		
+		android:background="@drawable/radio_button_toggle_left"
+		android:button="@drawable/transparent"
+		android:checked="true"
+		android:text="All Activities"
+		android:textColor="@drawable/toggle_text_color"
+		android:gravity="center"/>
+		
+	<RadioButton android:id="@+id/rightButton"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+
+		android:layout_weight="1"
+		
+		android:background="@drawable/radio_button_toggle_right"
+		android:button="@drawable/transparent"
+		android:checked="false"
+		android:text="My Schedule"
+		android:textColor="@drawable/toggle_text_color"
+		android:gravity="center"/>
+</RadioGroup>

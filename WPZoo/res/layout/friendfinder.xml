@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+		android:layout_width="fill_parent"
+	  	android:layout_height="wrap_content"
+	  	android:id="@+id/scrollview">
+	<LinearLayout 
+		android:orientation="vertical"
+		android:layout_width="fill_parent"
+	  	android:layout_height="wrap_content"
+	  	android:id="@+id/friend_finder_layout">
+	  	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		android:orientation="horizontal"
+		android:layout_width="fill_parent"
+	  	android:layout_height="wrap_content"
+	  	android:id="@+id/pin_layout">
+			<LinearLayout 
+				android:id="@+id/your_pin_layout"
+				android:orientation="vertical"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:gravity="center_horizontal"
+				android:padding="6dp">
+				<TextView android:id="@+id/your_name"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="Your Name:"
+					android:textColor="@drawable/text_color"
+					android:textSize="14dp"/>
+				<FrameLayout 
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:paddingTop="6dp">
+					<EditText android:id="@+id/your_name_field"
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content"
+						android:layout_marginTop="6dp"/>
+					<TextView android:id="@+id/your_pin"
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content"
+						android:layout_gravity="center"
+						android:gravity="center"
+						android:paddingTop="6dp"
+						android:textColor="@drawable/text_color"
+						android:textSize="14dp"/>
+				</FrameLayout>
+				<Button android:id="@+id/pin_button"
+					android:layout_width="fill_parent" 
+					android:layout_height="wrap_content"
+					android:layout_marginTop="6dp"
+					android:text="Get My PIN"/>
+			</LinearLayout>
+			<View 
+				android:layout_width="1dp"
+				android:layout_height="fill_parent"
+				android:background="@drawable/text_color"
+				android:layout_marginTop="6dp"
+				android:layout_marginBottom="6dp"/>
+			<LinearLayout 
+				android:id="@+id/friends_pin_layout"
+				android:orientation="vertical"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:gravity="center_horizontal"
+				android:padding="6dp">
+				<TextView android:id="@+id/your_friends_pin"
+					android:layout_width="wrap_content" 
+					android:layout_height="wrap_content"
+					android:text="Your Friend's PIN:"
+					android:textColor="@drawable/text_color"
+					android:textSize="14dp"/>
+				<EditText android:id="@+id/friends_pin_field"
+					android:layout_width="fill_parent" 
+					android:layout_height="wrap_content"
+					android:layout_marginTop="6dp"
+					android:inputType="phone"/>		
+				<Button android:id="@+id/follow_button"
+					android:layout_width="fill_parent" 
+					android:layout_height="wrap_content"
+					android:layout_marginTop="6dp"
+					android:text="Follow Friend"/>
+			</LinearLayout>
+		</LinearLayout>
+		<WebView android:id="@+id/instructions_text"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:padding="6dp"
+			android:background="@drawable/transparent"/>
+		<LinearLayout 
+			android:id="@+id/friends_list_header"
+			android:orientation="horizontal"
+			android:layout_width="fill_parent"
+	  		android:layout_height="wrap_content"
+			android:layout_gravity="center_vertical"
+	  		android:padding="6dp">
+			<TextView android:id="@+id/friends_followed"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="4dp"
+				android:text="Friend's Followed:"
+				android:textColor="@drawable/text_color"
+				android:textSize="14dp"
+				android:layout_weight="1"/>
+			<Button android:id="@+id/remove_friends_button"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="6dp"
+				android:text="Remove Friends"
+				android:layout_weight="1"/>
+		</LinearLayout>
+		<LinearLayout android:id="@+id/friends_list"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:orientation="vertical"/>
+	</LinearLayout>
+</ScrollView>

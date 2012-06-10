@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">&#x0A;<refactoring comment="Rename resource &apos;Texas Student Media/res/layout/feed_row.xml&apos; to &apos;menu_item&apos;" description="Rename resource &apos;feed_row.xml&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="res/layout/feed_row.xml" name="menu_item" stamp="1276743763610" updateReferences="true"/>&#x0A;<refactoring comment="Rename resource &apos;Texas Student Media/res/layout/menu_item&apos; to &apos;menu_item.xml&apos;" description="Rename resource &apos;menu_item&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="res/layout/menu_item" name="menu_item.xml" stamp="1276743770937" updateReferences="true"/>
+</session>

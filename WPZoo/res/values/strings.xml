@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">WPZoo</string>
+    <string name="no_network_connection">No Network Connection</string>
+    <string name="recommend_network_for_benefits">While not required, it is recommended that you connect to a network to gain the full benefits of this app.</string>
+    <string name="activity_requires_network_connection"> cannot work without a network connection.  Please check your network settings if you want to use this feature.</string>
+    <string name="location_unavailable">Location Unavailable</string>
+    <string name="friend_finder_location_unavailable">Your PIN feature is disabled. You can still follow your friends, but they will not be able to follow you. Enable a My Location source in System Settings to use it.</string>
+	<string name="maps_location_unavailable">Cannot display your location.  Enable a My Location source in System Settings to use it.</string>
+	<string name="maps_location_off_map">Your location is not currently on this map.</string>
+	<string name="search_label">WPZoo</string>
+	<string name="search_hint">Search locations</string>
+</resources>

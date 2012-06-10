@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    
+	<TableLayout
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:stretchColumns="1"
+	    android:layout_weight="1">
+	
+	    <TableRow>
+	        <TextView
+	            android:layout_column="1"
+	            android:text="Accelerometer"
+	            android:gravity="center" />
+	    </TableRow>
+	    <TableRow>
+	        <TextView
+	            android:layout_column="1"
+	            android:text="X: "
+	            android:padding="3dip" />
+	        <TextView android:id="@+id/accel_x"
+	            android:gravity="right"
+	            android:padding="3dip" />
+	    </TableRow>
+	    <TableRow>
+	        <TextView
+	            android:layout_column="1"
+	            android:text="Y: "
+	            android:padding="3dip" />
+	        <TextView android:id="@+id/accel_y"
+	            android:gravity="right"
+	            android:padding="3dip" />
+	    </TableRow>
+	    <TableRow>
+	        <TextView
+	            android:layout_column="1"
+	            android:text="Z: "
+	            android:padding="3dip" />
+	        <TextView android:id="@+id/accel_z"
+	            android:gravity="right"
+	            android:padding="3dip" />
+	    </TableRow>
+	    
+		<TableRow>
+	        <TextView
+	            android:layout_column="1"
+	            android:text="Orientation"
+	            android:gravity="center" />
+	    </TableRow>
+	    <TableRow>
+	        <TextView
+	            android:layout_column="1"
+	            android:text="Yaw: "
+	            android:padding="3dip" />
+	        <TextView android:id="@+id/orien_x"
+	            android:gravity="right"
+	            android:padding="3dip" />
+	    </TableRow>
+	    <TableRow>
+	        <TextView
+	            android:layout_column="1"
+	            android:text="Pitch: "
+	            android:padding="3dip" />
+	        <TextView android:id="@+id/orien_y"
+	            android:gravity="right"
+	            android:padding="3dip" />
+	    </TableRow>
+	    <TableRow>
+	        <TextView
+	            android:layout_column="1"
+	            android:text="Roll: "
+	            android:padding="3dip" />
+	        <TextView android:id="@+id/orien_z"
+	            android:gravity="right"
+	            android:padding="3dip" />
+	    </TableRow>
+	    
+	    
+	    <TableRow>
+	        <TextView
+	            android:layout_column="1"
+	            android:text="Velocity"
+	            android:gravity="center" />
+	    </TableRow>
+	    <TableRow>
+	        <TextView
+	            android:layout_column="1"
+	            android:text="X: "
+	            android:padding="3dip" />
+	        <TextView android:id="@+id/vel_x"
+	            android:gravity="right"
+	            android:padding="3dip" />
+	    </TableRow>
+	    <TableRow>
+	        <TextView
+	            android:layout_column="1"
+	            android:text="Y: "
+	            android:padding="3dip" />
+	        <TextView android:id="@+id/vel_y"
+	            android:gravity="right"
+	            android:padding="3dip" />
+	    </TableRow>
+	    <TableRow>
+	        <TextView
+	            android:layout_column="1"
+	            android:text="Z: "
+	            android:padding="3dip" />
+	        <TextView android:id="@+id/vel_z"
+	            android:gravity="right"
+	            android:padding="3dip" />
+	    </TableRow>
+	</TableLayout>
+	
+	<Button android:id="@+id/control"
+		android:text="Start"
+		android:layout_gravity="bottom"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_weight="6"/>
+</LinearLayout>

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy 1 elements(s) to &apos;Texas Student Media/src/com.texasstudentmedia&apos;&#x0A;- Original project: &apos;AudioTrack Test&apos;&#x0A;- Destination element: &apos;Texas Student Media/src/com.texasstudentmedia&apos;&#x0A;- Original element: &apos;com.thinkmaketest.AudioTrackTest.SafeThread.java&apos;" description="Copy compilation unit" destination="=Texas Student Media/src&lt;com.texasstudentmedia" element1="/src&lt;com.thinkmaketest.AudioTrackTest{SafeThread.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1275691292072" units="1" version="1.0"/>
+</session>

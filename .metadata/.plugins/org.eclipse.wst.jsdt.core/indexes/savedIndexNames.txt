@@ -1,0 +1,2 @@
+INDEX VERSION 1.121+/home/zt/Projects/android/.metadata/.plugins/org.eclipse.wst.jsdt.core/indexes
+3223400666.index

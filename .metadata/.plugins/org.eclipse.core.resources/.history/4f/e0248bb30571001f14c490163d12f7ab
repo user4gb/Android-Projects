@@ -1,0 +1,69 @@
+package com.texasstudentmedia;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+
+import android.app.ListActivity;
+import android.os.Bundle;
+import android.util.Log;
+import android.widget.ArrayAdapter;
+
+
+public class Menu extends ListActivity{
+	private final String TAG = "Texas Student Media";
+
+	@Override
+	public void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.menu);
+		
+		// Minimum number of items to retrieve for each feed
+		int min_items = 1;
+		
+		// URLs for feeds
+		String feeds[][] = {{"The Daily Texan: Breaking", "http://dailytexanonline.com/rss/spreed/main.xml"},
+							{"The Daily Texan: News", "http://dailytexanonline.com/rss/spreed/news.xml"},
+							{"The Daily Texan: Sports", "http://dailytexanonline.com/rss/spreed/sports.xml"},
+							{"The Daily Texan: Opinion", "http://dailytexanonline.com/rss/spreed/opinion.xml"},
+							{"The Daily Texan: Life & Arts", "http://dailytexanonline.com/rss/spreed/lifeandarts.xml"},
+							//{"Texas Travesty", ""},
+							{"Inside Our Campus", "http://insideourcampus.com/feed/"},
+							//{"Tuesday Coupons", ""}
+							};
+		
+		
+/*
+		// Recover feed information
+		ArrayAdapter<String> list;
+		try{
+			Bundle bundle = getIntent().getExtras().getBundle("feed_list");
+			if (bundle.keySet().size() == 0)
+				throw new Exception();
+			
+			Log.v(TAG, bundle.keySet().size() + "");
+			
+			Iterator<String> it = bundle.keySet().iterator();
+			ArrayList<String> items = new ArrayList<String>();
+			while(it.hasNext()){
+				items.add((String) it.next());
+			}
+			
+			list = new ArrayAdapter<String>(this, R.layout.menu_item, items);
+			setListAdapter(list);
+		}catch (Exception e){
+			e.printStackTrace();
+			Log.e(TAG, "", e);
+		}*/
+		
+		
+		
+		
+		
+	}
+	@Override
+	public void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.menu);
+
+	}
+}

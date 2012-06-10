@@ -1,0 +1,80 @@
+package com.texasstudentmedia;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.AdapterView.OnItemClickListener;
+
+
+public class Menu extends Activity{
+	private final String TAG = "Texas Student Media";
+	private ListView menu_list;
+	private HashMap<String, String> feed_data;
+
+	@Override
+	public void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.menu);
+		
+		// Get list to attach data to
+		menu_list = (ListView) findViewById(R.id.feed_list);
+		
+		// Read feed information
+		try{
+			/*
+			ArrayList<Feed> feeds = getIntent().getExtras().getParcelableArrayList("feeds");
+			if (feeds.keySet().size() == 0)
+				throw new Exception();	// Just in case
+			
+			
+			// Save internal data
+			feed_data = new HashMap<String, String>();
+			
+			// Go through each item in the map
+			Iterator<String> it = data.keySet().iterator();
+			ArrayList<String> menu_items = new ArrayList<String>();
+			while(it.hasNext()){
+				String feed_name = it.next();
+				
+				menu_items.add(feed_name);
+				// Map feed name to data retrieved
+				feed_data.put(feed_name, data.getString(feed_name));
+			}*/
+			
+			MenuItemListAdapter adapter = new MenuItemListAdapter(this);
+			menu_list.setAdapter(adapter);
+			menu_list.setOnItemClickListener(new OnItemClickListener(){
+				@Override
+				public void onItemClick(AdapterView<?> av, View v, int pos, long id) {
+					// Get selected feed's name
+					String feed_name = menu_list.getItemAtPosition(pos).toString();
+					
+					// Launch feed viewer w/ data from feed
+					Intent intent = new Intent();
+					intent.putExtra("title", feed_name);
+					intent.putExtra("data", feed_data.get(feed_name));
+					intent.setClass(Menu.this, Feed.class);
+					Menu.this.startActivity(intent);
+				}
+			});
+			
+		}catch (Exception e){
+			e.printStackTrace();
+			Log.e(TAG, "", e);
+		}
+	}
+	@Override
+	public void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.menu);
+
+	}
+}

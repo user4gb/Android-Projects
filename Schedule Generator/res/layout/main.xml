@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/root"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    
+    <ScrollView
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_weight="1">
+    	
+    	<LinearLayout
+    		android:id="@+id/class_list"
+    		android:orientation="vertical"
+    		android:layout_width="fill_parent"
+    		android:layout_height="fill_parent">
+		</LinearLayout>
+    </ScrollView>
+	<LinearLayout
+	    android:orientation="horizontal"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_marginTop="5px"
+	    android:layout_gravity="bottom"
+	    android:layout_weight="0">
+	    
+	    <Button android:id="@+id/add_course"
+	    	android:text="Add Class"
+	    	android:textSize="18sp"
+	    	android:textStyle="bold"
+	    	android:layout_margin="5px"
+	    	android:layout_height="wrap_content"
+	    	android:layout_width="wrap_content"
+	    	android:layout_weight="1"/>
+	    <Button android:id="@+id/generate"
+	    	android:text="Generate"
+	    	android:textSize="18sp"
+	    	android:textStyle="bold"
+	    	android:layout_margin="5px"
+	    	android:layout_height="wrap_content"
+	    	android:layout_width="wrap_content"
+	    	android:layout_gravity="right"
+	    	android:layout_weight="1"/>
+	</LinearLayout>
+</LinearLayout>

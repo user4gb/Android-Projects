@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    
+	<LinearLayout
+	    android:orientation="horizontal"
+	    android:layout_marginTop="10px"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content">
+	    
+		
+		<Button android:id="@+id/dec"
+			android:text="Decrease"
+			android:textStyle="bold"
+			android:textSize="18sp"
+	    	android:layout_height="wrap_content"
+	    	android:layout_width="wrap_content"
+	    	android:layout_weight="1"
+	    	android:layout_margin="20px"/>
+	    <Button android:id="@+id/inc"
+		    android:text="Increase"
+		    android:textStyle="bold"
+		    android:textSize="18sp"
+		    android:layout_height="wrap_content"
+		    android:layout_width="wrap_content"
+		    android:layout_weight="1"
+	    	android:layout_margin="20px"/>
+	    	
+	</LinearLayout>
+	
+	<TextView android:id="@+id/display"
+		android:layout_margin="10px"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"/>
+	
+	<Button android:id="@+id/control"
+		android:text="Start"
+		android:textSize="36sp"
+		android:textStyle="bold"
+	   	android:layout_height="wrap_content"
+	   	android:layout_width="fill_parent"
+		android:layout_gravity="bottom"
+		android:layout_weight="1"/>
+</LinearLayout>

@@ -1,0 +1,189 @@
+package com.thinkmaketest.utsg;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.Spinner;
+import android.widget.AdapterView.OnItemSelectedListener;
+
+public class AddNewCourse extends Activity implements Runnable{
+	private HashMap<String, ArrayList<String>> courses;
+	private Spinner department_list, course_list;
+	private Button ok, cancel;
+	private SharedPreferences prefs;
+	private Thread fetch_data;
+	private ProgressDialog progress_dialog; 
+
+	@Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        print("AddNewCourse activity started!");
+        setContentView(R.layout.addnewcourse);
+        print("Constructing UI");
+        
+        // Fetch UI objects
+        this.department_list = (Spinner) this.findViewById(R.id.addnewcourse_departmentlist);
+        this.course_list = (Spinner) this.findViewById(R.id.addnewcourse_courselist);
+        this.courses = new HashMap<String, ArrayList<String>>();
+        this.ok = (Button) this.findViewById(R.id.addnewcourse_ok);
+        this.cancel = (Button) this.findViewById(R.id.addnewcourse_cancel);
+        this.fetch_data = new Thread(this);
+        
+        // Setup each object
+        this.department_list.setEnabled(false);
+        this.department_list.setOnItemSelectedListener(new OnItemSelectedListener(){
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				course_list.setEnabled(true);
+			}
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {}
+        });
+        
+        this.course_list.setEnabled(false);
+        
+        this.ok.setEnabled(false);
+        this.ok.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				SharedPreferences prefs= v.getContext().getSharedPreferences("UT Schedule Generator", 0);
+				SharedPreferences.Editor editor = prefs.edit();
+				editor.putString("course_list", prefs.getString("course_list", "") + department_list.getSelectedItem().toString() + "|" + course_list.getSelectedItem().toString() + ":");
+				editor.commit();
+				finish();
+			}
+        });
+        this.cancel.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View v) { finish(); }
+        });
+        
+        this.progress_dialog = ProgressDialog.show(this, "", "Fetching Departments...");
+        //Start fetching data
+        fetch_data.start();
+    }
+
+	@Override
+	public void run() {
+		try {
+			// Create message to send off
+			Message msg = new Message();
+			
+            if (!department_list.isEnabled()){
+            	// Request list of departments
+            	if (prefs.getString("directory_list", "") != ""){
+            		// List has already been fetched. Reload is needed
+            		msg.arg1 = 0;
+            		print(AddNewCourse.this.getPreferences(0).getString("directory_list", ""));
+            		print("Directory list is already defined");
+            	}else{
+            		// Department list needs to be retrieved
+            		msg.arg1 = 1;
+            		
+        			// TODO: Start retrieval process
+        			
+        			// TODO: Create UT cookie(s)
+        			
+        			print("Fetching data!");
+        			
+        			try{
+	        	        BufferedReader in = new BufferedReader(
+	        	                                new InputStreamReader(
+	        	                                		new URL("http://ras.ece.utexas.edu/test.txt").
+	        	                                		openConnection().
+	        	                                		getInputStream()));
+	        	        
+	        	        String line = "",
+	        	        list = "";
+	        	        while ((line = in.readLine()) != null)
+	        	            list += line +":";
+	        	        in.close();
+	        	        
+	        	        print("Download complete!");
+	        	        
+	        	        // Save list to Message
+	        	        msg.obj = list;
+	        	        print("Sending data to handler");
+        			}catch (Exception e){
+        				print(e.getMessage());
+        			}
+            	}
+            }else{
+            	// Request list of courses in selected department
+            	if (courses.containsKey(department_list.getSelectedItem().toString())){
+            		// Course list for selected department has already been fetched. Reload is needed
+            		msg.arg1 = 3;
+            	}else{
+            		// Course list for department needs to be retrieved
+            		msg.arg1 = 4;
+            		
+        			// TODO: Start retrieval process
+            	}
+            }
+            
+            // Send the message that data has been retrieved
+            fetch_data_handler.sendMessage(msg);
+        } catch (Exception e) {} 
+	}
+	private Handler fetch_data_handler = new Handler() {
+		@Override
+        public void handleMessage(Message msg) {
+    		ArrayAdapter<String> adapter;
+    		
+        	switch(msg.arg1){
+        	case 1:// TODO: Cache downloaded data
+        		SharedPreferences prefs= getPreferences(0);
+				SharedPreferences.Editor editor = prefs.edit();
+				editor.putString("directory_list", (String) msg.obj);
+				editor.commit();
+        		
+        	case 0:// Load department_list from memory
+        		
+        		print((String) msg.obj);
+        		adapter = new ArrayAdapter<String>(AddNewCourse.this,
+	        				android.R.layout.simple_spinner_item,
+		        				getPreferences(0)
+		        				.getString("directory_list", "")
+		        				.split(":"));
+        		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        		department_list.setAdapter(adapter);
+                department_list.setEnabled(true);
+                
+        		break;
+        	case 3:
+        		// TODO: Cache downloaded data
+        		
+        		// Remove dialog
+        		
+        	case 2:
+        		// Reload course_list from memory
+        		break;
+        	}
+        	
+        	//Remove progress dialog
+    		AddNewCourse.this.progress_dialog.dismiss();
+        }
+	};
+
+	private static void print(String str) { Log.v("AddNewCourse", str); }
+	
+	private static void print(String[] str){
+		for(int i=0; i<str.length; i++)
+			Log.v("AddNewCourse", str[i]);
+	}
+}

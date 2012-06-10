@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<drawable name="text_color">#FFFFFFFF</drawable>
+<drawable name="twitter_text_color">@drawable/text_color</drawable>
+<drawable name="menu_text_color">@drawable/text_color</drawable>
+<drawable name="cell_menu_gradient_light">#40E6E6E6</drawable>
+<drawable name="cell_menu_gradient_orange">#40F29716</drawable>
+<drawable name="cell_menu_gradient_dark">#40404040</drawable>
+<drawable name="cache_color_hint">#FFF29716</drawable>
+<drawable name="transparent">#00000000</drawable>
+<drawable name="semi_transparent_background">#80FFFFFF</drawable>
+<drawable name="splash_bg_color">#FF58953B</drawable>
+<drawable name="toggle_text_color">#FF000000</drawable>
+<drawable name="banner_twitter_bgcolor">#FF000000</drawable>
+<drawable name="banner_facebook_bgcolor">#FF385694</drawable>
+<drawable name="map_text_label_color">#FF000000</drawable>
+</resources>

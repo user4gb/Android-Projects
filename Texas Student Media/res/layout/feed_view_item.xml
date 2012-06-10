@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content"
+	android:weightSum="1.0">
+	
+	<TableRow>
+		<LinearLayout android:layout_weight=".9"
+  			android:layout_width="0dip"
+			android:layout_height="wrap_content"
+			android:orientation="vertical">
+			
+			<TextView android:id="@+id/feed_preview_item_name"
+				android:text="Feed Item Name"
+				android:textSize="18sp"
+				android:textStyle="bold"
+				android:lines="2"
+				android:maxLines="2"
+				android:padding="3sp"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center_vertical" />
+				
+							<!-- Tab after string to prevent clipping -->
+			<TextView android:id="@+id/feed_preview_item_age"
+				android:text="0 days old	"	
+				android:textSize="14sp"
+				android:gravity="right"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content" />
+				
+		</LinearLayout>
+		
+		<TextView android:text=">"
+			android:textSize="22sp"
+			android:textStyle="bold"
+			android:padding="3sp"
+			android:layout_weight=".1"
+  			android:layout_width="0dip"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center_vertical" />
+	</TableRow>
+</TableLayout>

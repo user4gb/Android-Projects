@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
+		<item value="255" key="DIALOG_WIDTH"/>
+		<item value="218" key="DIALOG_Y_ORIGIN"/>
+		<item value="809" key="DIALOG_X_ORIGIN"/>
+		<item value="366" key="DIALOG_HEIGHT"/>
+		<item value="1|Segoe UI|8.25|0|WINDOWS|1|-11|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
+	</section>
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
+		<item value="true" key="wrap"/>
+		<item value="false" key="casesensitive"/>
+		<item value="false" key="isRegEx"/>
+		<item value="false" key="incremental"/>
+		<item value="false" key="wholeword"/>
+		<item value="Control" key="selection"/>
+		<list key="findhistory">
+			<item value="CONTROL"/>
+			<item value="Step 5"/>
+			<item value="Connected!"/>
+			<item value="mRobot"/>
+			<item value="Wiimotes Connected"/>
+			<item value="wiimotes connected"/>
+			<item value="onActivityResult"/>
+			<item value="StartActivity"/>
+		</list>
+		<list key="replacehistory">
+			<item value=""/>
+			<item value="&quot;course_list_cache&quot;"/>
+			<item value="course_list_cache"/>
+			<item value="department"/>
+			<item value="departments"/>
+		</list>
+	</section>
+</section>

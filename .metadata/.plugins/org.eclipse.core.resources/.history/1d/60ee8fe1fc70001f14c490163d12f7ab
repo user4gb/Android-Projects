@@ -1,0 +1,45 @@
+package com.texasstudentmedia;
+
+import java.util.Set;
+
+import android.app.ListActivity;
+import android.os.Bundle;
+import android.util.Log;
+import android.widget.ArrayAdapter;
+
+
+public class Menu extends ListActivity{
+	private final String TAG = "Texas Student Media";
+
+	@Override
+	public void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.menu);
+
+		// Recover feed information
+		ArrayAdapter<String> list;
+		//if (savedInstanceState != null){
+			try{
+				Set set = getIntent().getExtras().get("feed_list");
+				Bundle bundle = getIntent().getExtras().getBundle("feed_list");
+				if (bundle == null)
+					throw new Exception();
+				
+				Log.v(TAG, bundle.keySet().size() + "");
+	
+				list = new ArrayAdapter<String>(this, R.layout.menu_item, (String[]) bundle.keySet().toArray());
+			}catch (Exception e){
+				e.printStackTrace();
+				list = new ArrayAdapter<String>(this, R.layout.menu_item, new String[]{"One", "Two", "Three"});
+			}
+		//}else
+		//	list = new ArrayAdapter<String>(this, R.layout.menu_item, new String[]{"Fuck", "Fuck", "Fuck", "Fuck", "Fuck"});
+		setListAdapter(list);
+	}
+	@Override
+	public void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.menu);
+
+	}
+}

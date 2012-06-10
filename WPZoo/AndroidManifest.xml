@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      android:versionCode="1"
+      android:versionName="1.0" package="com.avai.wpzoo">
+    <application android:icon="@drawable/wz_icon" android:label="@string/app_name" android:debuggable="true">
+        <activity android:name=".LoadingActivity"
+                  android:label="@string/app_name"
+                  android:theme="@android:style/Theme.NoTitleBar"
+                  android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity> 
+        <activity android:name=".MainActivity"
+                  android:theme="@android:style/Theme.NoTitleBar">
+        </activity> 
+		<activity android:name=".AmpMapActivity" 
+				  android:theme="@android:style/Theme.NoTitleBar"
+				  android:launchMode="singleTop">
+				<intent-filter>
+					<action android:name="android.intent.action.SEARCH" />
+					<category android:name="android.intent.category.DEFAULT"/>
+				</intent-filter>
+				<meta-data android:name="android.app.searchable"
+					 	   android:resource="@xml/searchable"/>
+		</activity>
+		<activity android:name=".MenuActivity"/>
+		<activity android:name=".PageActivity"/>
+		<activity android:name=".ScheduleActivity"
+			android:label="Schedule"/>
+		<activity android:name=".TwitterActivity"/>
+		<activity android:name=".UrlActivity"/>
+		<activity android:name=".FriendFinderActivity"/>
+		<activity android:name=".ProfileActivity"/>
+		<activity android:name=".SurveyActivity"/>
+		<activity android:name=".LocationsActivity"
+				  android:theme="@android:style/Theme.NoTitleBar">
+			<intent-filter>
+				<action android:name="android.intent.action.SEARCH"/>
+				<category android:name="android.intent.category.DEFAULT"/>
+			</intent-filter>
+			<meta-data android:name="android.app.searchable"
+					 	   android:resource="@xml/searchable"/>
+		</activity>
+		<activity android:name="com.codecarpet.fbconnect.FBLoginActivity"
+			android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+		<activity android:name="com.codecarpet.fbconnect.FBPermissionActivity"
+			android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+		<activity android:name="com.codecarpet.fbconnect.FBFeedActivity"
+			android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+		<provider android:name=".ItemSearchProvider"
+			android:authorities="wpzoo_itemsearchprovider"
+			android:syncable="false"/>		
+
+		<service android:name=".FriendFinderService" />
+    </application>
+ 
+<uses-sdk android:minSdkVersion="3"/>
+<uses-permission android:name="android.permission.INTERNET"></uses-permission> 
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
+</manifest>

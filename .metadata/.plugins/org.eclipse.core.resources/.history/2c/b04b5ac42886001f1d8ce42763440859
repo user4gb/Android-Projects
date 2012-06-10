@@ -1,0 +1,13 @@
+package com.texasstudentmedia;
+
+public class SimpleTimer {
+	private long start;
+	
+	public SimpleTimer(){
+		start = end = -1;
+	}
+	
+	public void start(){
+		start = System.currentTimeMillis();
+	}
+}

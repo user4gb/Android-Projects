@@ -1,0 +1,368 @@
+/*
+ * Copyright 2011 Cvetko Pirš. All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without modification, are
+ * permitted provided that the following conditions are met:
+ * 
+ *    1. Redistributions of source code must retain the above copyright notice, this list of
+ *       conditions and the following disclaimer.
+ * 
+ *    2. Redistributions in binary form must reproduce the above copyright notice, this list
+ *       of conditions and the following disclaimer in the documentation and/or other materials
+ *       provided with the distribution.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY CVETKO PIRŠ "AS IS" AND ANY EXPRESS OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+ * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+ * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ */
+
+package com.thinkmaketest.wiimotespherocontrol;
+
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.bluetooth.BluetoothAdapter;
+import android.content.ComponentName;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.RemoteException;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import orbotix.robot.app.StartupActivity;
+import orbotix.robot.base.FrontLEDOutputCommand;
+import orbotix.robot.base.RGBLEDOutputCommand;
+import orbotix.robot.base.Robot;
+import orbotix.robot.base.RobotProvider;
+import orbotix.robot.base.RollCommand;
+import orbotix.robot.base.RotationRateCommand;
+
+import com.ccpcreations.android.WiiUseAndroid.IWiiControllerPublicService;
+import com.ccpcreations.android.WiiUseAndroid.IWiiControllerPublicServiceCallback;
+import com.example.wiimotecontrollerusagedemo.R;
+
+public class WiimoteSpheroControl extends Activity {
+	private static final int DIALOG_NOWIIMOTES=1000;
+	private static final int DIALOG_NOOROLDWIIMOTECONTROLLERAPP=1001;
+	private static final String APP_ID="WiimoteController Usage Demo";
+	
+	//A handler for dispatching the toast showing job to the activity thread
+	private Handler handler=new Handler();
+	
+	private IWiiControllerPublicService wcService=null;
+	
+	// Activity result tags
+	private final static int REQUEST_ENABLE_BT = 0;
+	private final static int STARTUP_ACTIVITY = 1;
+	private static Robot mRobot = null;
+	
+	private boolean bluetoothToggled;
+
+    /** Called when the activity is first created. */
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        
+        //Set ContentView to the correct layout
+        setContentView(R.layout.main);
+        
+        if (wcService == null){
+/* Step 1 */
+	        // Enable Bluetooth
+	        BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+	    	bluetoothToggled = false; 
+	        if (!mBluetoothAdapter.isEnabled()) {
+	        	Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+		        startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+		        bluetoothToggled = true;
+	        }else{
+	        	enableWiimote();
+	        }
+        }else{
+        	Log.e("Wiimote Sphero Control", "Oh Shit...");
+        }
+    }
+    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+		super.onActivityResult(requestCode, resultCode, data);
+		
+/* Step 2 */
+		if (requestCode == REQUEST_ENABLE_BT && resultCode == RESULT_OK){
+			enableWiimote();
+		}else if (requestCode == STARTUP_ACTIVITY && resultCode == RESULT_OK){
+			final String robot_id = data.getStringExtra(StartupActivity.EXTRA_ROBOT_ID);
+			mRobot = RobotProvider.getDefaultProvider().findRobot(robot_id);
+        	
+			if(robot_id != null && !robot_id.equals("")){
+/* Step 5 */
+		        // Connected to robot!
+				try {
+					((TextView) findViewById(R.id.status)).setText("Enabling Bluetooth\n Enabled\nConnecting Wiimotes\n Wiimotes connected:" + Integer.toString(wcService.getNumberOfConnectedWiimotes()) + "\nConnecting to Sphero\n Connected!");
+				} catch (RemoteException e) {
+					e.printStackTrace();
+				}
+			}
+			
+	    	RGBLEDOutputCommand.sendCommand(mRobot, 255, 255, 255);
+		}
+    }
+    
+    private void enableWiimote(){
+		//TODO: Dialog w/ instructions
+		
+    	// Enable Exit button
+    	((Button) findViewById(R.id.exit)).setEnabled(true);
+    	
+        //Connect to Wiimote
+    	((TextView) findViewById(R.id.status)).setText("Enabling Bluetooth\n Enabled\nConnecting Wiimotes");
+		
+		if(WiimoteController.isWiimoteControllerInstalled(WiimoteSpheroControl.this)) {
+			boolean success = WiimoteController.connectToWCService(WiimoteSpheroControl.this, wcServiceConnection);
+			if(!success) {
+				Toast.makeText(WiimoteSpheroControl.this, "Something went wrong.", Toast.LENGTH_SHORT).show();
+			}
+		} else {
+			//Intent receiver doesn't exist, offer the user to install WiimoteController
+			showDialog(DIALOG_NOOROLDWIIMOTECONTROLLERAPP);
+		}
+    }
+    
+    @Override
+    protected void onResume(){
+    	super.onResume();
+    	
+        if (wcService != null && mRobot == null){
+/* Step 3*/
+	        //Set the Disconnect button event
+	        findViewById(R.id.exit).setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					finish();
+				}
+			});
+			findViewById(R.id.exit).setEnabled(true);
+			
+			try {
+				((TextView) findViewById(R.id.status)).setText("Enabling Bluetooth\n Enabled\nConnecting Wiimotes\n Wiimotes connected:" + Integer.toString(wcService.getNumberOfConnectedWiimotes()) + "\nConnecting to Sphero");
+				
+/* Step 4 */
+				// Connect to Sphero
+				Intent i = new Intent(this, StartupActivity.class);
+		        startActivityForResult(i, STARTUP_ACTIVITY);
+				
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
+        }
+    }
+    
+    @Override
+    protected void onDestroy() {
+    	// Turn off bluetooth if it was turned on
+    	if (bluetoothToggled)
+    		BluetoothAdapter.getDefaultAdapter().disable();
+    	
+    	disconnectFromService();
+    	
+    	super.onDestroy();
+    }
+    
+    /** This function contains all dialogs */
+    @Override
+    protected Dialog onCreateDialog(int id) {
+    	switch(id) {
+    	//Dialog to show when there are no wiimotes.
+    		case WiimoteSpheroControl.DIALOG_NOWIIMOTES:
+    		return new AlertDialog.Builder(WiimoteSpheroControl.this)
+			.setTitle("Connect Wiimotes")
+			.setMessage("Follow the instructions provided.")
+			.setPositiveButton("Connect", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					//Start the main activity of WiimoteController
+					try {
+						wcService.displayConnectActivity();
+					} catch(RemoteException re) {
+						re.printStackTrace();
+						Toast.makeText(WiimoteSpheroControl.this, "Something went wrong.", Toast.LENGTH_SHORT).show();			
+					}
+				}
+			})
+			.create();
+    		//Dialog to show when the WiimoteController app is missing or not updated
+	    	case WiimoteSpheroControl.DIALOG_NOOROLDWIIMOTECONTROLLERAPP:
+	    		return new AlertDialog.Builder(WiimoteSpheroControl.this)
+	    		.setTitle("WiimoteController app missing or old")
+	    		.setMessage("You have to get or update WiimoteController from the Android Market. Do you want to do this now?")
+	    		.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						//Show the WiimoteController Android Market Page
+						WiimoteController.wiimoteControllerOnMarket(WiimoteSpheroControl.this);
+					}
+				})
+				.setNegativeButton("No", null)
+				.create();
+	    	default:
+	        	return super.onCreateDialog(id);	    		
+    	}
+    }
+        
+    //This function is used to gracefully disconnect from the WiimoteController service
+    private void disconnectFromService() {
+		if(wcService!=null) {
+			//Unregister the stub
+			try {
+				wcService.unregisterFromCallback(wcCallbackStub);
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
+			//Unbind from the service
+			try {
+				unbindService(wcServiceConnection);
+				wcService=null;
+				Toast.makeText(WiimoteSpheroControl.this, "Disconnected.", Toast.LENGTH_SHORT).show();						
+			} catch(IllegalArgumentException iae) {
+				Toast.makeText(WiimoteSpheroControl.this, "Not connected.", Toast.LENGTH_SHORT).show();
+			}
+		}    	
+    }
+    
+    // TODO: Add Wiimote Action hooks here 
+    
+    /**
+     * Create a WiimoteController callback stub. This object will get registered with the
+     * WiimoteController's public service so that we will get notified of wiimote events.
+     * This is where all event functions that react to wiimotes are written.
+     * Note that these functions get called by the thread that is separate from your
+     * Activity's thread so you might have to use Handlers to dispatch events to your
+     * Activity. An example to this is shown in the wiimoteDisconnected callback below.
+     */
+    private IWiiControllerPublicServiceCallback.Stub wcCallbackStub = new IWiiControllerPublicServiceCallback.Stub() {
+		@Override
+		public void wiimotesDisconnected() throws RemoteException {
+			Log.v(APP_ID, "All wiimotes disconnected.");
+			
+			//Also show a Toast about this event. Use the activity's handler to make the activity thread show the Toast.
+			//This will get executed by whoever owns the "handler" object
+			handler.post(new Runnable() {
+				@Override
+				public void run() {
+					Toast.makeText(WiimoteSpheroControl.this, "All wiimotes disconnected.", Toast.LENGTH_SHORT).show();						
+				}
+			});			
+		}
+		
+		@Override
+		public void wiimotesConnected(int numberOfConnectedWiimotes) throws RemoteException {
+			Log.v(APP_ID, numberOfConnectedWiimotes+" wiimote(s) connected.");
+		}
+		
+		@Override
+		public void wiimoteDisconnected(int whichWiimote) throws RemoteException {
+			Log.v(APP_ID, "WM" + (whichWiimote+1) + " disconnected.");
+		}
+		
+		@Override
+		public void newPeripheralDetected(int whichWiimote, int whichPeripheral) throws RemoteException {
+			String perName = whichPeripheral==0 ? ": peripheral disconnected." :
+                whichPeripheral==1 ? ": nunchuk connected." :
+                whichPeripheral==2 ? ": classic controller connected." :
+                /* else */           ": unknown peripheral (code "+whichPeripheral+") connected.";
+			Log.v(APP_ID, "WM" + (whichWiimote+1) + perName);								
+		}
+		
+		@Override
+		public void buttonReleased(int whichWiimote, int whichButton) throws RemoteException {
+			Log.v(APP_ID, "WM" + (whichWiimote+1) + ": released button " + whichButton);
+			
+			
+		}
+		
+		@Override
+		public void buttonPressed(int whichWiimote, int whichButton) throws RemoteException {
+			Log.v(APP_ID, "WM" + (whichWiimote+1) + ": pressed button " + whichButton);
+			
+			if (whichWiimote == 1){
+				switch(whichButton){
+					case 2:	// Up
+						RollCommand.sendCommand(mRobot, RollCommand.getCurrentHeading(), 0.75f);
+						break;
+					case 3:	// Down
+						break;
+					case 5: // Right
+						break;
+					case 4:	// Left
+						break;
+				}
+			}
+		}
+		
+		@Override
+		public void analogInputStatusChanged(int wiimote, int analogId, double newValue) throws RemoteException {
+			Log.v(APP_ID, "WM" + (wiimote+1) + ": AN" + analogId + ": value changed to " + newValue);
+		}
+	};
+    
+	/**
+	 * This object handles the WiimoteController's service connection. You get notified when the 
+	 * service connects (IBinder should be remembered because it is used to send commands to). As
+	 * soon as the service connects, you should check version (see checkVersion()) with the 
+	 * version number 
+	 */
+	private ServiceConnection wcServiceConnection = new ServiceConnection() {
+		@Override
+		public void onServiceConnected(ComponentName name, IBinder service) {
+			//Connect to the WiimoteController service
+			wcService = IWiiControllerPublicService.Stub.asInterface(service);
+			try {				
+				if(!wcService.checkVersion(1)) {
+					//The current WiimoteController app must be outdated so ask the user to update!
+					unbindService(wcServiceConnection);
+					Toast.makeText(WiimoteSpheroControl.this, "Failed. Please update the WiimoteController app!", Toast.LENGTH_LONG).show();
+					showDialog(WiimoteSpheroControl.DIALOG_NOOROLDWIIMOTECONTROLLERAPP);
+					return;
+				}
+				
+				//Register the callback stub and check if we will understand each other
+				wcService.registerToCallback(wcCallbackStub);
+
+				//Check number of connected wiimotes and report to the user
+				int wiimotes = wcService.getNumberOfConnectedWiimotes();
+				if(wiimotes<=0) {
+					showDialog(WiimoteSpheroControl.DIALOG_NOWIIMOTES);
+				} else {
+					Toast.makeText(WiimoteSpheroControl.this, "Connected to " + wiimotes + " wiimotes.", Toast.LENGTH_SHORT).show();
+					//Toast.makeText(WiimoteSpheroControl.this, "See logcat to watch button events.", Toast.LENGTH_SHORT).show();
+				}
+			} catch (RemoteException e) {
+				//Report the exception to the user
+				e.printStackTrace();
+				Toast.makeText(WiimoteSpheroControl.this, "Service crashed! Try again.", Toast.LENGTH_SHORT).show();
+			}			
+		}
+		
+		@Override
+		public void onServiceDisconnected(ComponentName name) {
+			wcService=null;
+			Toast.makeText(WiimoteSpheroControl.this, "Service disconnected.", Toast.LENGTH_SHORT).show();
+		}
+	};
+}

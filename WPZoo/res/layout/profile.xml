@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width = "fill_parent"
+	android:layout_height = "fill_parent"
+	android:id="@+id/scrollview">
+	<LinearLayout
+		android:orientation="vertical"
+		android:layout_width="fill_parent"
+	  	android:layout_height="fill_parent"
+	  	android:id ="@+id/profile_layout">
+		<WebView android:id="@+id/instructions_text"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:padding="6dp"
+			android:background="@drawable/transparent"/>
+		<LinearLayout android:id="@+id/twitter"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			android:layout_gravity="center_horizontal">
+			<View
+				android:layout_width="fill_parent"
+				android:layout_height="1dp"
+				android:background="@drawable/text_color"/>
+			<FrameLayout
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content">
+				<View
+					android:layout_width="fill_parent"
+					android:layout_height="42dp"
+					android:background="@drawable/banner_twitter_bgcolor"/>
+		  		<ImageView android:id="@+id/twitter_banner"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center_horizontal"
+					android:src="@drawable/com_banner_twitter"/>
+			</FrameLayout>
+			<View 
+				android:layout_width="fill_parent"
+				android:layout_height="1dp"
+				android:background="@drawable/text_color"/>
+			<LinearLayout
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:orientation="horizontal"
+				android:padding="6dp">
+				<EditText android:id="@+id/twitter_username_field"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:layout_marginRight="3dp"
+					android:hint="Username"/>
+				<EditText android:id="@+id/twitter_password_field"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:layout_marginLeft="3dp"
+					android:inputType="textPassword"				
+					android:hint="Password"/>
+			</LinearLayout>
+			<Button android:id="@+id/twitter_button"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="6dp"
+				android:layout_marginRight="6dp"
+				android:layout_marginBottom="6dp"
+				android:text="Login"/>
+			<TextView android:id="@+id/twitter_status"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center_horizontal"
+				android:layout_marginLeft="6dp"
+				android:layout_marginRight="6dp"
+				android:layout_marginBottom="6dp"
+				android:text=""
+				android:textColor="@drawable/text_color"
+				android:textSize="14dp"/>
+	 	</LinearLayout>
+	  	<LinearLayout android:id="@+id/facebook"
+	  		android:layout_width="fill_parent"
+	  		android:layout_height="wrap_content"
+	  		android:orientation="vertical">
+	  		<View 
+				android:layout_width="fill_parent"
+				android:layout_height="1dp"
+				android:background="@drawable/text_color"/>
+			<FrameLayout 
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content">
+				<View 
+					android:layout_width="fill_parent"
+					android:layout_height="42dp"
+					android:background="@drawable/banner_facebook_bgcolor"/>
+		  		<ImageView android:id="@+id/facebook_banner"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center_horizontal"
+					android:src="@drawable/com_banner_facebook"/>
+			</FrameLayout>
+			<View
+				android:layout_width="fill_parent"
+				android:layout_height="1dp"
+				android:background="@drawable/text_color"/>
+			<com.codecarpet.fbconnect.FBLoginButton 
+				android:id="@+id/facebook_button"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content" 
+				android:layout_gravity="center"
+				android:layout_margin="6dp"/>
+			<TextView android:id="@+id/facebook_status"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center_horizontal"
+				android:layout_marginLeft="6dp"
+				android:layout_marginRight="6dp"
+				android:layout_marginBottom="6dp"
+				android:text=""
+				android:textColor="@drawable/text_color"
+				android:textSize="14dp"/>
+	  	</LinearLayout>
+	</LinearLayout>
+</ScrollView>

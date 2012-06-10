@@ -1,0 +1,48 @@
+package com.texasstudentmedia;
+
+import java.util.Date;
+
+public class FeedItem {
+	private String title;
+	private String author;
+	private Date date_published;
+	private String content;
+	
+	public FeedItem(){
+		this.title = "";
+		this.author = "";
+		//TODO: Extract age to Date
+		this.content = "";
+	}
+	public FeedItem(String title, String author, String age, String content){
+		this.title = title;
+		this.author = author;
+		//TODO: Extract age to Date
+		this.content = content;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	public String getAuthor() {
+		return author;
+	}
+	public void setAuthor(String author) {
+		this.author = author;
+	}
+	public Date getDatePublished() {
+		return date_published;
+	}
+	public void setDate_published(Date datePublished) {
+		date_published = datePublished;
+	}
+	public String getContent(){
+		return content;
+	}
+	public void setContent(String content) {
+		this.content = content;
+	}
+}

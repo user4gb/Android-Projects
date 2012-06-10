@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:id="@+id/locations_layout">
+
+	<ImageView android:id="@+id/search_tools"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:src="@drawable/com_searchbar_base"/>
+	<Button android:id="@+id/cancelbutton"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="12dp"
+		android:layout_marginRight="14dp"
+		android:layout_alignParentTop="true"
+		android:layout_alignParentRight="true"
+		
+		android:background="@drawable/com_butt_close"/>
+	
+	<Button android:id="@+id/searchbox"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginLeft="14dp"
+		android:layout_marginRight="6dp"
+		android:layout_marginTop="12dp"
+		android:layout_alignParentTop="true"
+		android:layout_alignParentLeft="true"
+		android:layout_toLeftOf="@id/cancelbutton"
+		android:gravity="center_vertical"
+		android:background="@drawable/com_searchfield"
+		android:text="    tiger"
+		android:textSize="16dp"/>
+	
+	<include layout="@layout/toggle"
+		android:id="@+id/toggle"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_margin="12dp"
+		android:layout_below="@id/search_tools"/>
+	
+	<include layout="@layout/listview"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:layout_below="@id/toggle"/>
+</RelativeLayout>

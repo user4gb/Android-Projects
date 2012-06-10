@@ -1,0 +1,53 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+
+
+public class CookieTest {
+	private String user = "cm33462",
+				   pass = "";
+	
+	public static void main(String[] args) throws Exception {
+		// Get html of login page
+	    InputStream in = new InputStream(
+                		new URL("https://utdirect.utexas.edu/registration/chooseSemester.wbx").
+                		openConnection().
+                		getInputStream());
+
+	    String html = "", line;
+	    while ((line = in.readLine()) != null)
+			html += line;
+	    
+		// Scrub for hidden fields
+	    if (spec.indexOf("://") > 0) {
+            URL u = new URL(spec);
+            Object content = u.getContent();
+            if (content instanceof InputStream) {
+                r = new InputStreamReader((InputStream)content);
+            }
+            else if (content instanceof Reader) {
+                r = (Reader)content;
+            }
+            else {
+                throw new Exception("Bad URL content type.");
+            }
+        }
+        else {
+            r = new FileReader(spec);
+        }
+
+        HTMLEditorKit.Parser parser;
+        System.out.println("About to parse " + spec);
+        parser = new ParserDelegator();
+        parser.parse(r, new HTMLParseLister(), true);
+        r.close();
+	    
+		// Put found data into POST Request
+		
+		// Send data
+		
+		// Print response
+
+	}
+
+}

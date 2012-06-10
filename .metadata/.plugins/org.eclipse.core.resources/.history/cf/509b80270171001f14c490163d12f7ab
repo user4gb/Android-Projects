@@ -1,0 +1,158 @@
+package com.texasstudentmedia;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import javax.xml.parsers.FactoryConfigurationError;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.DefaultHandler;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+
+public class Splash extends Activity {
+	private SafeThread thread[];
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.splash);
+		
+		// Minimum number of items to retrieve for each feed
+		int min_items = 1;
+		
+		// URLs for feeds
+		String feeds[][] = {{"The Daily Texan: Breaking", "http://dailytexanonline.com/rss/spreed/main.xml"},
+							{"The Daily Texan: News", "http://dailytexanonline.com/rss/spreed/news.xml"},
+							{"The Daily Texan: Sports", "http://dailytexanonline.com/rss/spreed/sports.xml"},
+							{"The Daily Texan: Opinion", "http://dailytexanonline.com/rss/spreed/opinion.xml"},
+							{"The Daily Texan: Life & Arts", "http://dailytexanonline.com/rss/spreed/lifeandarts.xml"},
+							//{"Texas Travesty", ""},
+							{"Inside Our Campus", "http://insideourcampus.com/feed/"},
+							//{"Tuesday Coupons", ""}
+							};
+		
+		// Safely retrieve, parse, and save data from RSS feeds
+		// Make the data retrieval asynchronous to improve loading times
+		thread = new SafeThread[feeds.length];
+		for(int i=0; i < feeds.length; i++){
+			thread[i] = new SafeThread(){
+				private String url;
+				private int min_items;
+				
+				public void setParams(String str, int num){
+					url = str;
+					num = min_items;
+				}
+				
+				public void doStuff(){
+					// Go through each feed
+					Bundle feed_list = new Bundle();
+					for(int i=0; i < min_items; i++){
+						// Create container for feed items
+						final ArrayList<HashMap<String, String>> feed = new ArrayList<HashMap<String, String>>();
+						
+						// Go through file reading the items	
+						final HashMap<String, String> feed_item = new HashMap<String, String>();
+						try{
+							XMLReader xml_reader = SAXParserFactory.newInstance().newSAXParser().getXMLReader();
+							xml_reader.setContentHandler(new DefaultHandler(){
+								private HashMap<String, String> item = new HashMap<String, String>();
+								private String value = "";
+								private final int IN_NOTHING = 0,
+													IN_ITEM = 1,
+													IN_TITLE = 2,
+													IN_DESC = 3;
+								private int state = IN_NOTHING;
+	
+								@Override
+								public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+									if (localName.equalsIgnoreCase("item"))
+										state = IN_ITEM;
+									else if(state == IN_ITEM){
+										if (localName.equalsIgnoreCase("title"))
+											state = IN_TITLE;
+										else if (localName.equalsIgnoreCase("description"))
+											state = IN_DESC;
+									}
+								}
+	
+								@Override
+								public void endElement(String uri, String localName, String qName) throws SAXException {
+									if (localName.equalsIgnoreCase("title") && state == IN_TITLE){
+										feed_item.put("title", value);
+										value = "";
+										state = IN_ITEM;
+									}else if (localName.equalsIgnoreCase("description") && state == IN_DESC){
+										feed_item.put("description", value);
+										value = "";
+										state = IN_ITEM;
+									}else if (localName.equalsIgnoreCase("item") && state == IN_ITEM){
+										feed.add(feed_item);
+										state = IN_NOTHING;
+										if (feed.size() >= min_items)
+											// Minimum number of items was retrieved.
+											// This feed is done
+											throw new SAXException();
+									}
+								}
+	
+								@Override
+								public void characters(char[] ch, int start, int length) throws SAXException {
+									if (state > IN_ITEM)
+										value += new String(ch, start, length);
+								}
+									
+							});
+							xml_reader.parse(new InputSource(new URL(urls[i][1]).openStream()));
+						} catch (MalformedURLException e) {
+							e.printStackTrace();
+						} catch (SAXException e) {
+							//e.printStackTrace();
+						} catch (IOException e) {
+							e.printStackTrace();
+						} catch (ParserConfigurationException e) {
+							e.printStackTrace();
+						} catch (FactoryConfigurationError e) {
+							e.printStackTrace();
+						}
+						
+						// Add feed to feed_list
+						feed_list.putSerializable(url, feed);
+					}
+					
+					// We're done here. Let's go to the list!
+					// First make sure that this is the first thread completed
+					Intent intent = new Intent();
+					intent.setClass(Splash.this, Menu.class);
+					intent.putExtra("feed_list", feed_list);
+					Splash.this.startActivity(intent);
+					
+					// No need to fetch data again
+					this.kill();
+				}
+			};
+			thread[i].setParams(feeds[i][1], min_items);
+			thread[i].start();
+		}
+	}
+	@SuppressWarnings("unused")
+	private void displayErrorMessage(String str){}
+    
+	@Override
+	public void onStop(){
+		thread.kill();
+		super.onStop();
+	}
+}

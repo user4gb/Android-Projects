@@ -1,0 +1,98 @@
+package com.texasstudentmedia;
+
+import android.app.TabActivity;
+import android.content.Intent;
+import android.content.res.Configuration;
+import android.os.Bundle;
+import android.util.Log;
+import android.widget.TabHost;
+import android.widget.TabHost.TabSpec;
+
+
+public class TabbedMenu extends TabActivity{
+	private final String TAG = "Texas Student Media";
+
+	@Override
+	public void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.tabbedmenu);
+		Log.v(TAG, "Inside of " + this.toString());
+		setTitle("Texas Student Media v" + ((TexasStudentMedia) getApplication()).getVersion());
+		/*
+		// Get list to attach data to
+		//menu_list = (ListView) findViewById(R.id.tabbedmenu_list);
+		
+		// Setup list
+		try{
+			menu_list.setAdapter(new MenuItemListAdapter(this, ((TexasStudentMedia) getApplication()).getFeeds()));
+			menu_list.setOnItemClickListener(new OnItemClickListener(){
+				@Override
+				public void onItemClick(AdapterView<?> av, View v, int pos, long id) {
+					// Get selected feed's name
+					String feed_name = ((Feed) menu_list.getItemAtPosition(pos)).getName();
+					Log.v(TAG, feed_name);
+					
+					// Launch feed viewer w/ data from feed
+					Intent intent = new Intent();
+					// Pass index of current feed
+					intent.putExtra("feed_index", pos);
+					intent.setClass(TabbedMenu.this, FeedPreview.class);
+					TabbedMenu.this.startActivity(intent);
+				}
+			});
+			
+		}catch (Exception e){
+			e.printStackTrace();
+			Log.e(TAG, "", e);
+		}*/
+		
+
+		//Setup tabs
+		TabHost tab_host = getTabHost();
+		tab_host.setup(); 
+
+		TabSpec ts = tab_host.newTabSpec("TAB_SECTIONS");
+		ts.setIndicator("Sections");
+		ts.setContent(new Intent(this, FeedList.class));
+		tab_host.addTab(ts);
+
+		ts = tab_host.newTabSpec("TAB_BREAKING");
+		ts.setIndicator("Breaking");
+		Intent intent = new Intent(this, FeedPreview.class);
+		intent.putExtra("feed_index", 0);
+		ts.setContent(intent);
+		tab_host.addTab(ts);
+
+		ts = tab_host.newTabSpec("TAB_POPULAR");
+		ts.setIndicator("Popular");
+		intent = new Intent(this, FeedPreview.class);
+		intent.putExtra("feed_index", 1);
+		ts.setContent(intent);
+		tab_host.addTab(ts);
+		
+		/*ts = tab_host.newTabSpec("TAB_RADIO");
+		ts.setIndicator("Radio");
+		ts.setContent(R.id.edit_item_text_tab);
+		tab_host.addTab(ts);
+		
+		ts = tab_host.newTabSpec("TAB_SETTINGS");
+		ts.setIndicator("Settings");
+		ts.setContent(new Intent(this, Settings.class));
+		tab_host.addTab(ts);
+		*/
+
+		tab_host.setCurrentTab(0);
+		
+	}
+	@Override
+	public void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.tabbedmenu);
+
+	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig){
+		super.onConfigurationChanged(newConfig);
+	}
+}

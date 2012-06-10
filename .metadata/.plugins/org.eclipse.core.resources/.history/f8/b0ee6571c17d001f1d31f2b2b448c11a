@@ -1,0 +1,22 @@
+package com.texasstudentmedia;
+
+import android.content.Context;
+import android.view.View;
+import android.widget.TableLayout;
+import android.widget.TextView;
+
+public class MenuItem extends TableLayout{
+	public MenuItem(Context context, Feed feed.) {
+		super(context);
+		
+		this.setTag(feed);
+		
+		View v = inflate(context, R.layout.menu_item, null);
+		
+		TextView name = (TextView)v.findViewById(R.id.feed_name);
+		name.setText(feed.getName());
+		
+		addView(v);
+	}
+
+}

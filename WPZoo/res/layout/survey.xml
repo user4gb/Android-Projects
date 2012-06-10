@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/frame"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+	<FrameLayout android:id="@+id/flipper"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent">
+		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			android:id="@+id/question_layout_1"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:orientation="vertical">
+			<TextView android:id="@+id/progress_label_1"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="right"
+				android:padding="6dp"
+				android:textColor="@drawable/text_color"
+				android:textSize="14dp"
+				android:text="Question"/>
+		    <TextView android:id="@+id/title_1"
+		    	android:layout_width="wrap_content"
+		    	android:layout_height="wrap_content"
+		    	android:layout_gravity="left"
+		    	android:padding="6dp"
+		    	android:textColor="@drawable/text_color"
+				android:textSize="20dp"
+				android:text="question title"/>
+			<include android:id="@android:id/list" android:tag="list_1" layout="@layout/listview"/>
+		</LinearLayout>
+		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			android:id="@+id/question_layout_2"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:orientation="vertical"
+			android:visibility="invisible">
+			<TextView android:id="@+id/progress_label_2"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"    	
+				android:layout_gravity="right"
+				android:padding="6dp"
+				android:textColor="@drawable/text_color"
+				android:textSize="14dp"
+				android:text="Question"/>
+		    <TextView android:id="@+id/title_2"
+		    	android:layout_width="wrap_content"
+		    	android:layout_height="wrap_content"
+		    	android:layout_gravity="left"
+		    	android:padding="6dp"
+		    	android:textColor="@drawable/text_color"
+				android:textSize="20dp"
+				android:text="question title"/>
+			<include android:id="@android:id/list"  android:tag="list_2" layout="@layout/listview"/>
+		</LinearLayout>
+	</FrameLayout>
+	<TextView android:id="@+id/thank_you_message"
+	  	android:layout_width="wrap_content"
+	  	android:layout_height="wrap_content"
+	  	android:padding = "10dp"
+	  	android:layout_gravity="center"
+	  	android:gravity="center"
+	  	android:visibility="invisible"
+	  	android:textColor="@drawable/text_color"
+	  	android:textSize="18dp"
+	  	android:text="Your survey has been submitted.  Thank you for your input!"/>  	
+ </FrameLayout>

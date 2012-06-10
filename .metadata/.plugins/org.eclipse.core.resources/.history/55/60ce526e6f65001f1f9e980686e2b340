@@ -1,0 +1,57 @@
+package com.thinkmaketest.sensorstest;
+
+import android.app.Activity;
+import android.hardware.SensorManager;
+import android.os.Bundle;
+import android.widget.TextView;
+
+public class SensorsTest extends Activity implements Runnable{
+	private String TAG = "Sensors Test";
+	private SensorManager manager;
+	private AccelerometerSensor accelerometer;
+	private OrientationSensor orientation;
+	private TextView accel_x,
+					 accel_y,
+					 accel_z,
+					 orien_x,
+					 orien_y,
+					 orien_z,
+					 true_accel_x,
+					 true_accel_y,
+					 true_accel_z;
+	private long delay;
+	
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.main);
+        
+        this.delay = 100;
+        
+        // Set areas to write to
+        this.accel_x = (TextView) findViewById(R.id.accel_x);
+        this.accel_y = (TextView) findViewById(R.id.accel_y);
+        this.accel_z = (TextView) findViewById(R.id.accel_z);
+        this.orien_x = (TextView) findViewById(R.id.orien_x);
+        this.orien_y = (TextView) findViewById(R.id.orien_y);
+        this.orien_z = (TextView) findViewById(R.id.orien_z);
+        this.true_accel_x = (TextView) findViewById(R.id.true_accel_x);
+        this.true_accel_y = (TextView) findViewById(R.id.true_accel_y);
+        this.true_accel_z = (TextView) findViewById(R.id.true_accel_z);
+        
+        this.accelerometer = new AccelerometerSensor((SensorManager) getSystemService(SENSOR_SERVICE), true);
+        this.orientation = new OrientationSensor((SensorManager) getSystemService(SENSOR_SERVICE), true);
+    }
+
+	@Override
+	public void run() {
+		while(true){
+			float accel_values[] = this.accelerometer.getValues(),
+			orien_values[] = this.orientation.getValues();
+			
+			this.accel_x.setText(Double.toString());
+			
+			try { wait(this.delay); } catch (InterruptedException e) { e.printStackTrace(); }
+		}
+	}
+}

@@ -1,0 +1,29 @@
+import java.io.InputStream;
+import java.net.URL;
+
+import javax.swing.text.html.HTMLEditorKit;
+import javax.swing.text.html.parser.ParserDelegator;
+
+
+public class CookieTest {
+	private String user = "cm33462",
+				   pass = "";
+	
+	public static void main(String[] args) throws Exception {
+		// Get html of login page
+	    InputStream in = new InputStream((InputStream)(new URL("https://utdirect.utexas.edu/registration/chooseSemester.wbx").getContent()));
+
+		// Scrub for hidden fields
+	    HTMLEditorKit.Parser parser = new ParserDelegator();
+        parser.parse(in, new HTMLParseLister(), true);
+        in.close();
+	    
+		// Put found data into POST Request
+		
+		// Send data
+		
+		// Print response
+
+	}
+
+}

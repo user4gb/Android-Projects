@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<style name="default_text" parent="@android:style/Widget.TextView">
+		<item name="android:textColor">@drawable/text_color</item>
+		<item name="android:textSize">16dp</item>
+	</style>
+</resources>

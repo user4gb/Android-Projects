@@ -1,0 +1,39 @@
+package com.thinkmaketest.sensorstest;
+
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+
+public class AccelerometerSensor implements SensorEventListener{
+	private SensorManager manager;
+	private float[] last_values;
+	private boolean enabled;
+	
+	public AccelerometerSensor(SensorManager _manager, boolean _enable){
+		this.last_values = new float[]{0, 0, 0};
+		this.enabled = _enable;
+		this.manager = _manager;
+	}
+	public void enable(){
+		if (!enabled){
+	        this.manager.registerListener(this, manager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_GAME);
+			enabled = true;
+		}
+	}
+	public void disable(){
+		if (enabled){
+			this.manager.unregisterListener(this);
+			enabled = false;
+		}
+	}
+	public float[] getData(){ return last_values; }
+	
+	//Listener Functions
+	@Override
+	public void onAccuracyChanged(Sensor sensor, int accuracy) {}
+	@Override
+	public void onSensorChanged(SensorEvent event) {
+		this.last_values = event.values;
+	}
+}
